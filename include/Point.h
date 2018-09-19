@@ -13,9 +13,9 @@ namespace slohani {
 	template <typename T>
 	class Point {
 	public:
-		explicit Point() = default;
+		explicit constexpr Point() = default;
 
-		explicit Point(T xPos, T yPos) {
+		explicit constexpr Point(T xPos, T yPos) {
 			mXPos = xPos;
 			mYPos = yPos;
 		}
@@ -33,22 +33,22 @@ namespace slohani {
 				std::abs(mYPos) < std::numeric_limits<U>::epsilon());
 		}
 
-		inline void setX(T xPos) { mXPos = xPos; }
+		inline constexpr void setX(T xPos) { mXPos = xPos; }
 
-		inline void setY(T yPos) { mYPos = yPos; }
+		inline constexpr void setY(T yPos) { mYPos = yPos; }
 
-		inline T getX() const { return mXPos; }
+		inline constexpr T getX() const { return mXPos; }
 
-		inline T getY() const { return mYPos; }
+		inline constexpr T getY() const { return mYPos; }
 
-		constexpr Point<T> operator+(const Point<T>& point) {
+		constexpr Point<T> operator+(const Point<T>& point) const {
 			Point<T> returnedPoint = *this;
 			returnedPoint.mXPos += point.getX();
 			returnedPoint.mYPos += point.getY();
 			return returnedPoint;
 		}
 
-		constexpr Point<T> operator+(T value) {
+		constexpr Point<T> operator+(T value) const {
 			Point<T> returnedPoint = *this;
 			returnedPoint.mXPos += value;
 			returnedPoint.mYPos += value;
@@ -67,14 +67,14 @@ namespace slohani {
 			return *this;
 		}
 
-		constexpr Point<T> operator-(const Point<T>& point) {
+		constexpr Point<T> operator-(const Point<T>& point) const {
 			Point<T> returnedPoint = *this;
 			returnedPoint.mXPos -= point.getX();
 			returnedPoint.mYPos -= point.getY();
 			return returnedPoint;
 		}
 
-		constexpr Point<T> operator-(T value) {
+		constexpr Point<T> operator-(T value) const {
 			Point<T> returnedPoint = *this;
 			returnedPoint.mXPos -= value;
 			returnedPoint.mYPos -= value;
@@ -95,7 +95,7 @@ namespace slohani {
 
 		template <typename U = T,
 			std::enable_if_t<std::is_integral_v<U>, U>* = nullptr>
-			constexpr Point<T> operator*(T factor) {
+			constexpr Point<T> operator*(T factor) const {
 			if (factor == 1)
 			{
 				return *this;
@@ -109,7 +109,7 @@ namespace slohani {
 
 		template <typename U = T,
 			std::enable_if_t<std::is_floating_point_v<U>, U>* = nullptr>
-			constexpr Point<T> operator*(T factor) {
+			constexpr Point<T> operator*(T factor) const {
 			if (factor == 1.0)
 			{
 				return *this;
@@ -149,7 +149,7 @@ namespace slohani {
 
 		template <typename U = T,
 			std::enable_if_t<std::is_integral_v<U>, U>* = nullptr>
-			constexpr Point<T> operator/(T divisor) {
+			constexpr Point<T> operator/(T divisor) const {
 			if (divisor == 0) {
 				throw std::exception("Cannot divide by zero!");
 			}
@@ -166,7 +166,7 @@ namespace slohani {
 
 		template <typename U = T,
 			std::enable_if_t<std::is_floating_point_v<U>, U>* = nullptr>
-			constexpr Point<T> operator/(T divisor) {
+			constexpr Point<T> operator/(T divisor) const {
 			if (divisor == 0.0) {
 				throw std::exception("Cannot divide by zero!");
 			}
