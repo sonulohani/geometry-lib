@@ -6,8 +6,14 @@ SET(CMAKE_BUILD_TYPE Debug)
 # GTest
 ################################
 
+if(MSVC)
+  # By default, GTest compiles on Windows in CRT static linkage mode. We use this
+  # variable to force it into using the CRT in dynamic linkage (DLL), just as CPR
+  # does.
+  set(gtest_force_shared_crt ON CACHE BOOL "Force gtest to use the shared c runtime")
+endif()
+
 ADD_SUBDIRECTORY(googletest)
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 enable_testing()
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
@@ -22,7 +28,3 @@ add_executable(runUnitTests ${CMAKE_CURRENT_SOURCE_DIR}/unit-test/PointTest.cpp
 # Link test executable against gtest & gtest_main
 target_link_libraries(runUnitTests gtest gtest_main)
 add_test(runUnitTests runUnitTests)
-
-if(MSVC)
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /DEF:my_defs.def /NODEFAULTLIB")
-endif()
