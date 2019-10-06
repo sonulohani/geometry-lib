@@ -11,18 +11,23 @@ namespace slohani {
 		explicit constexpr Rect() = default;
 
 		explicit constexpr Rect(const Point<T>& topLeft, const Point<T>& bottomRight) {
-			mX = topLeft.getX();
-			mY = topLeft.getY();
-			mWidth = bottomRight.getX() - topLeft.getX();
-			mWidth = bottomRight.getY() - topLeft.getY();
+			m_xPos = topLeft.getX();
+			m_yPos = topLeft.getY();
+			m_width = bottomRight.getX() - topLeft.getX();
+			m_width = bottomRight.getY() - topLeft.getY();
 		}
 
 		explicit constexpr Rect(T x, T y, T width, T height) {
-			mX = x;
-			mY = y;
-			mWidth = width;
-			mHeight = height;
+			m_xPos = x;
+			m_yPos = y;
+			m_width = width;
+			m_height = height;
 		}
+
+		constexpr Rect(const Rect<T>& obj) = default;
+		constexpr Rect& operator=(const Rect<T> & obj) = default;
+		constexpr Rect(Rect<T> && obj) = default;
+		constexpr Rect& operator=(Rect<T> && obj) = default;
 
 		// TBD
 		//Rect(const QPoint &topLeft, const Size &size)
@@ -30,25 +35,25 @@ namespace slohani {
 		template <typename U = T,
 			std::enable_if_t<std::is_integral_v<U>, U>* = nullptr>
 		constexpr inline bool isNull() const {
-			return mWidth == 0 && mHeight == 0;
+			return m_width == 0 && m_height == 0;
 		}
 
 		template <typename U = T,
 			std::enable_if_t<std::is_floating_point_v<U>, U>* = nullptr>
 		constexpr inline bool isNull() const {
-			return mWidth == 0.0 && mHeight == 0.0;
+			return m_width == 0.0 && m_height == 0.0;
 		}
 
 		template <typename U = T,
 			std::enable_if_t<std::is_integral_v<U>, U>* = nullptr>
 		constexpr inline bool isValid() const {
-			return mWidth > 0 && mHeight > 0;
+			return m_width > 0 && m_height > 0;
 		}
 
 		template <typename U = T,
 			std::enable_if_t<std::is_floating_point_v<U>, U>* = nullptr>
 		constexpr inline bool isValid() const {
-			return mWidth > 0.0 && mHeight > 0.0;
+			return m_width > 0.0 && m_height > 0.0;
 		}
 
 		template <typename U = T,
@@ -64,23 +69,23 @@ namespace slohani {
 		}
 
 		constexpr inline T getWidth() const {
-			return mWidth;
+			return m_width;
 		}
 
 		constexpr inline T getHeight() const {
-			return mHeight;
+			return m_height;
 		}
 
 		constexpr inline T getX() const {
-			return mX;
+			return m_xPos;
 		}
 
 		constexpr inline T getT() const {
-			return mY;
+			return m_yPos;
 		}
 
 		constexpr inline Point<T> center() const {
-			return Point<T>(mX + mWidth/2, mY + mHeight/2);
+			return Point<T>(m_xPos + m_width/2, m_yPos + m_height/2);
 		}
 
 	private:
@@ -93,9 +98,9 @@ namespace slohani {
 
 		
 	private:
-		T mX = {}; 
-		T mY = {};
-		T mWidth = {};
-		T mHeight = {};
+		T m_xPos = {}; 
+		T m_yPos = {};
+		T m_width = {};
+		T m_height = {};
 	};
 }
