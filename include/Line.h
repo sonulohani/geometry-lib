@@ -24,44 +24,50 @@ SOFTWARE.
 
 #pragma once
 
-#include <cstdint>
-#include <limits>
+#include <cmath>
+#include "Point.h"
 
 namespace slohani {
-namespace common {
-enum class CompareCode : std::int8_t { GREATER = -1, EQUAL, LESS };
-
 template <typename T>
-static auto compare(const T first, const T second) {
-  if (first == second) {
-    return CompareCode::EQUAL;
-  }
-  if (first > second) {
-    return CompareCode::GREATER;
-  }
-  return CompareCode::LESS;
-}
+class Line {
+ public:
+  constexpr Line() = default;
+  constexpr Line(T x1, T y1, T x2, T y2)
+      : m_x1{x1}, m_y1{y1}, m_x2{x2}, m_y2{y2} {}
 
-template <>
-static auto compare<float>(const float first, const float second) {
-  if (std::abs(first - second) < std::numeric_limits<float>::epsilon()) {
-    return CompareCode::EQUAL;
-  }
-  if (first > second) {
-    return CompareCode::GREATER;
-  }
-  return CompareCode::LESS;
-}
+  constexpr auto p1() const { return Point<T>(m_x1, m_y1); }
 
-template <>
-static auto compare<double>(const double first, const double second) {
-  if (std::abs(first - second) < std::numeric_limits<double>::epsilon()) {
-    return CompareCode::EQUAL;
+  constexpr auto p2() const { return Point<T>(m_x2, m_y2); }
+
+  constexpr auto x1() const { return m_x1; }
+
+  constexpr auto y1() const { return m_y1; }
+
+  constexpr auto x2() const { return m_x2; }
+
+  constexpr auto y2() const { return m_y2; }
+
+  constexpr auto angle() const {
+    const auto dx = m_x2 - m_x1;
+    const auto dy = m_y2 - m_y1;
+    const auto theta = std::atan2(dy, dx) * 180 / M_PI;
+    const auto thetaNormalized = theta < 0 ? theta + 360 : theta;
+    if (common::compare(thetaNormalized, static_cast<T>(360)) ==
+        common::CompareCode::EQUAL) {
+      return {};
+    }
+    return thetaNormalized;
   }
-  if (first > second) {
-    return CompareCode::GREATER;
-  }
-  return CompareCode::LESS;
-}
-}  // namespace common
+
+  /*constexpr void setAngle(const double angle) {
+    const auto angleR = angle * M_PI / 180.0;
+
+  }*/
+
+ private:
+  T m_x1 = {};
+  T m_y1 = {};
+  T m_x2 = {};
+  T m_y2 = {};
+};
 }  // namespace slohani

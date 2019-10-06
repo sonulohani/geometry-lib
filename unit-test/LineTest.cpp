@@ -22,46 +22,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#pragma once
+#include "Line.h"
+#include "gtest/gtest.h"
 
-#include <cstdint>
-#include <limits>
-
-namespace slohani {
-namespace common {
-enum class CompareCode : std::int8_t { GREATER = -1, EQUAL, LESS };
-
-template <typename T>
-static auto compare(const T first, const T second) {
-  if (first == second) {
-    return CompareCode::EQUAL;
-  }
-  if (first > second) {
-    return CompareCode::GREATER;
-  }
-  return CompareCode::LESS;
+TEST(LineTest, TestDefaultCtor) {
+  slohani::Line<int> line;
+  EXPECT_EQ(line.x1(), int{});
+  EXPECT_EQ(line.y1(), int{});
+  EXPECT_EQ(line.x2(), int{});
+  EXPECT_EQ(line.y2(), int{});
 }
 
-template <>
-static auto compare<float>(const float first, const float second) {
-  if (std::abs(first - second) < std::numeric_limits<float>::epsilon()) {
-    return CompareCode::EQUAL;
-  }
-  if (first > second) {
-    return CompareCode::GREATER;
-  }
-  return CompareCode::LESS;
+TEST(LineTest, TestParamCtor) {
+  slohani::Line<int> line1(5, 6, 7, 8);
+  EXPECT_EQ(line1.x1(), 5);
+  EXPECT_EQ(line1.y1(), 6);
+  EXPECT_EQ(line1.x2(), 7);
+  EXPECT_EQ(line1.y2(), 8);
+
+  slohani::Line<float> line2(5.7f, 6.3f, 7.5f, 8.12f);
+  EXPECT_FLOAT_EQ(line2.x1(), 5.7f);
+  EXPECT_FLOAT_EQ(line2.y1(), 6.3f);
+  EXPECT_FLOAT_EQ(line2.x2(), 7.5f);
+  EXPECT_FLOAT_EQ(line2.y2(), 8.12f);
 }
 
-template <>
-static auto compare<double>(const double first, const double second) {
-  if (std::abs(first - second) < std::numeric_limits<double>::epsilon()) {
-    return CompareCode::EQUAL;
-  }
-  if (first > second) {
-    return CompareCode::GREATER;
-  }
-  return CompareCode::LESS;
+TEST(LineTest, TestPointGetterMethod) {
+  slohani::Line<int> line1(5, 6, 7, 8);
+  EXPECT_EQ(line1.p1(), slohani::Point<int>(5, 6));
+  EXPECT_EQ(line1.p2(), slohani::Point<int>(7, 8));
+
+  slohani::Line<float> line2(5.7f, 6.3f, 7.5f, 8.12f);
+  EXPECT_EQ(line2.p1(), slohani::Point<float>(5.7f, 6.3f));
+  EXPECT_EQ(line2.p2(), slohani::Point<float>(7.5f, 8.12f));
 }
-}  // namespace common
-}  // namespace slohani

@@ -23,6 +23,7 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR} ${CMAKE_CURR
 
 # Add test cpp file
 add_executable(runUnitTests ${CMAKE_CURRENT_SOURCE_DIR}/unit-test/PointTest.cpp 
+							${CMAKE_CURRENT_SOURCE_DIR}/unit-test/LineTest.cpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/unit-test/RectTest.cpp 
                             ${CMAKE_CURRENT_SOURCE_DIR}/unit-test/main.cpp)
                             
