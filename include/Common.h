@@ -24,11 +24,12 @@ SOFTWARE.
 
 #pragma once
 
+#include <cstdint>
 #include <limits>
 
 namespace slohani {
 namespace common {
-enum class CompareCode : int8_t { GREATER = -1, EQUAL, LESS };
+enum class CompareCode : std::int8_t { GREATER = -1, EQUAL, LESS };
 
 template <typename T>
 auto compare(const T first, const T second) {
